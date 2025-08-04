@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, Linking, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import fetchForecast from "../api/ForecastApi";
@@ -6,6 +7,7 @@ import fetchNews from "../api/NewsApi";
 import fetchWeather from "../api/WeatherApi";
 import { ForecastItem } from "../types/ForecastType";
 import { Article } from "../types/NewsType";
+
 
 const Home=()=> {
     const [location, setLocation] = useState<Location.LocationObject | null>(null);
@@ -22,10 +24,21 @@ const [description,setDescription]= useState<string | null>(null);
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
 
-  
+  const { category } = useLocalSearchParams<{ category?: string }>();
+  console.log(category)
+
+
+   useEffect(() => {
+    if (category) {
+      getNews(category);
+    }
+  }, [category]);
 
 
   useEffect(() => {
+
+     
+    
 
    async function getCurrentLocation() {
       
