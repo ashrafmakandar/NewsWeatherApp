@@ -4,11 +4,11 @@ import { ForecastItem, ForecastResponse } from "../types/ForecastType";
 
 
 
-const fetchForecast = async (lat: number, lon: number): Promise<ForecastItem[]> => {
+const fetchForecast = async (lat: number, lon: number,unit?:string): Promise<ForecastItem[]> => {
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=${unit}`
   );
-
+console.log("Fetching forecast from URL:", response.url);
   if (!response.ok) {
     throw new Error("Failed to fetch forecast");
   }

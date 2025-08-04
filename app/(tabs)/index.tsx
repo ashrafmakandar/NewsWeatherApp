@@ -23,22 +23,45 @@ const [description,setDescription]= useState<string | null>(null);
 
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const [units,setUnits] = useState<string>("metric");
 
-  const { category } = useLocalSearchParams<{ category?: string }>();
+  const { category,unit } = useLocalSearchParams<{ category?: string,unit?:string }>();
   console.log(category)
+  console.log(unit)
 
 
    useEffect(() => {
     if (category) {
+      
       getNews(category);
     }
   }, [category]);
+
+  useEffect(() => {
+    if (unit) {
+      console.log("Selected Unit:", unit);
+      
+setUnits(unit);
+getCurrentLocation();
+    
+    }
+  }, [unit]);
 
 
   useEffect(() => {
 
      
     
+
+    getCurrentLocation();
+       
+
+
+ 
+  
+  
+  }, [])
+
 
    async function getCurrentLocation() {
       
@@ -55,7 +78,7 @@ const [description,setDescription]= useState<string | null>(null);
       setLocation(location);
 
       setLoading(false);
-         fetchWeather(location?.coords.latitude, location?.coords.longitude) // Example coordinates for San Francisco
+         fetchWeather(location?.coords.latitude, location?.coords.longitude,units) // Example coordinates for San Francisco
       .then(async data => {
      
         setLoading(true)
@@ -77,7 +100,7 @@ else {
 }
 
 getNews(filterKeyword);
-        const forecastData = await fetchForecast(location?.coords.latitude, location?.coords.longitude);
+        const forecastData = await fetchForecast(location?.coords.latitude, location?.coords.longitude,units);
         setForecastData(forecastData);
         setLoading(false);
       })
@@ -89,14 +112,6 @@ getNews(filterKeyword);
 );
     }
 
-    getCurrentLocation();
-       
-
-
- 
-  
-  
-  }, [])
 
   const getNews = async (keyword: string) => {
     try {
@@ -141,7 +156,7 @@ fontSize: 24, fontWeight: 'bold'
      style={{
 fontSize: 18, color: 'gray'
      }}
-     >{temp}°C</Text>
+     >{temp}°{units==="imperial"?"F":"C"}</Text>
 
 </View>
 <View style={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
@@ -151,7 +166,7 @@ fontSize: 20, fontWeight: 'bold'
      <Text
      style={{fontSize: 16, color: 'gray'
      }}
-     >{description}°C</Text>
+     >{description}°{units==="imperial"?"F":"C"}</Text>
 
 </View>
 
@@ -194,7 +209,7 @@ renderItem={({ item }) => (
     marginBottom: 4,}}>{item.weather[0].main}</Text>
     <Text style={{   fontSize: 20,
     fontWeight: "bold",
-    color: "#004d40",}}>{item.main.temp}°C</Text>
+    color: "#004d40",}}>{item.main.temp}{units==="imperial"?"F":"C"}</Text>
   </View>
 )}
 

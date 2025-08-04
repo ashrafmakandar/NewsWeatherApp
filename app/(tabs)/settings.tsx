@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { FlatList, SafeAreaView, StatusBar, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, SafeAreaView, StatusBar, Switch, Text, View } from 'react-native';
 import fetchNews from '../api/NewsApi';
 
 const settings = () => {
@@ -15,9 +15,29 @@ const settings = () => {
   'technology',
 ];
  const [selectedCategory, setSelectedCategory] = useState<string>("");
+ const [selectUnit,setSelectedUnit]= useState<string>("metric");
 
  const router = useRouter();
 
+
+   const [isEnabled, setIsEnabled] = useState(selectUnit === 'imperial');
+
+  useEffect(() => {
+    setIsEnabled(selectUnit === 'imperial');
+  }, [selectUnit]);
+
+  const toggleSwitch = () => {
+    const newUnit = isEnabled ? 'metric' : 'imperial';
+    setIsEnabled(!isEnabled);
+    console.log("Selected Unit:", newUnit);
+    setSelectedUnit(newUnit);
+              router.push({
+      pathname: "/(tabs)",
+      params: { "unit": newUnit },
+    });
+
+  
+  };
 
 
   return (
@@ -76,6 +96,29 @@ const settings = () => {
 
         
         />
+
+        <View style={{
+             flexDirection: 'row',
+    alignItems: 'center',
+        }}>
+        <Text style={{
+            fontSize: 16,
+    marginHorizontal: 8,
+    color: '#333',
+        }}>°C</Text>
+        <Switch
+          trackColor={{ false: '#ccc', true: '#81b0ff' }}
+          thumbColor={isEnabled ? '#007aff' : '#f4f3f4'}
+          ios_backgroundColor="#ccc"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+        <Text style={{
+            fontSize: 16,
+    marginHorizontal: 8,
+    color: '#333',
+        }}>°F</Text>
+      </View>
 
       </View>
    
