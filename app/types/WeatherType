@@ -1,0 +1,37 @@
+// types/WeatherType.ts
+
+export interface Coord {
+  lon: number;
+  lat: number;
+}
+
+export interface Weather {
+  id: number;
+  main: string;
+  description: string;
+  icon: string;
+}
+
+export interface Main {
+  temp: number;
+  feels_like: number;
+  temp_min: number;
+  temp_max: number;
+  pressure: number;
+  humidity: number;
+  sea_level: number;
+  grnd_level: number;
+}
+
+export interface WeatherType {
+  coord: Coord;
+  weather: Weather[];
+  main: Main;
+  timezone: number;
+  id: number;
+  name: string;
+  cod: number;
+  sys: {
+    country: string;
+  };
+}
