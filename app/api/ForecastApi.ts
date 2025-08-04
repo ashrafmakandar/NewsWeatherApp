@@ -1,10 +1,12 @@
+import { WEATHER_API_KEY } from '../Constants';
 import { ForecastItem, ForecastResponse } from "../types/ForecastType";
+
 
 
 
 const fetchForecast = async (lat: number, lon: number): Promise<ForecastItem[]> => {
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=9089fd9315eb3fee51fb63e824a69365&units=metric`
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`
   );
 
   if (!response.ok) {
